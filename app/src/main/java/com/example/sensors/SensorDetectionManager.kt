@@ -21,6 +21,7 @@ class SensorDetectionManager(context: Context) : SensorEventListener {
     private val FALL_THRESHOLD = 3.0f // 3G force for impact simulation
     private val FREE_FALL_THRESHOLD = 2.0f // Gravity dropping near zero
     private var isFalling = false
+    private var lastFallTime = 0L
 
     fun startMonitoring() {
         if (!isMonitoring && accelerometer != null) {
@@ -37,7 +38,11 @@ class SensorDetectionManager(context: Context) : SensorEventListener {
     }
 
     fun simulateFall() {
-        _fallDetected.tryEmit(Unit)
+        val now = System.currentTimeMillis()
+        if (now - lastFallTime > 3000) {
+            _fallDetected.tryEmit(Unit)
+            lastFallTime = now
+        }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -53,8 +58,12 @@ class SensorDetectionManager(context: Context) : SensorEventListener {
             }
             
             // If there's an impact spike immediately after a freefall phase or extreme acceleration
-            if (gForce > 3.0) {
-                _fallDetected.tryEmit(Unit)
+            if (gForce > 2.5) {
+                val now = System.currentTimeMillis()
+                if (now - lastFallTime > 3000) { // 3 seconds debounce
+                    _fallDetected.tryEmit(Unit)
+                    lastFallTime = now
+                }
                 isFalling = false // reset
             }
         }

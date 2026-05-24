@@ -63,10 +63,16 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("home") {
                             HomeScreen(
-                                onNavigateToAlerts = { navController.navigate("alerts") },
-                                onNavigateToHistory = { navController.navigate("history") },
+                                onNavigateToAlerts = { 
+                                    navController.navigate("alerts") { launchSingleTop = true }
+                                },
+                                onNavigateToHistory = { 
+                                    navController.navigate("history") { launchSingleTop = true }
+                                },
                                 onSimulateFall = { sensorManager.simulateFall() },
-                                onManualSOS = { navController.navigate("countdown") }
+                                onManualSOS = { 
+                                    navController.navigate("countdown") { launchSingleTop = true }
+                                }
                             )
                         }
                         composable("countdown") {
@@ -98,9 +104,8 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(Unit) {
                     sensorManager.fallDetected.onEach {
                         // Navigate to countdown if a fall is detected
-                        // Note: navigate calls from LaunchedEffect should be safe if on UI thread
                         if (navController.currentDestination?.route == "home") {
-                             navController.navigate("countdown")
+                             navController.navigate("countdown") { launchSingleTop = true }
                         }
                     }.launchIn(this)
                 }

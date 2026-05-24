@@ -117,20 +117,20 @@ fun HomeScreen(
             }
 
             // Floating nodes
-            Box(modifier = Modifier.offset(x = (-80).dp, y = (-60).dp).size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary).shadow(10.dp, ambientColor = MaterialTheme.colorScheme.primary, spotColor = MaterialTheme.colorScheme.primary))
-            Box(modifier = Modifier.offset(x = 90.dp, y = 80.dp).size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary).shadow(10.dp, ambientColor = MaterialTheme.colorScheme.primary, spotColor = MaterialTheme.colorScheme.primary))
+            Box(modifier = Modifier.offset(x = (-80).dp, y = (-60).dp).size(8.dp).shadow(10.dp, CircleShape).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
+            Box(modifier = Modifier.offset(x = 90.dp, y = 80.dp).size(8.dp).shadow(10.dp, CircleShape).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
 
             // Core Shield
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(
                     modifier = Modifier
                         .size(176.dp)
+                        .shadow(24.dp, CircleShape)
                         .clip(CircleShape)
                         .background(Brush.radialGradient(
                             colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.background)
                         ))
-                        .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f), CircleShape)
-                        .shadow(24.dp, CircleShape, ambientColor = MaterialTheme.colorScheme.primary, spotColor = MaterialTheme.colorScheme.primary),
+                        .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f), CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -177,7 +177,8 @@ fun HomeScreen(
         ) {
             // Alerts Tile
             Surface(
-                modifier = Modifier.weight(1f).clickable { onNavigateToAlerts() },
+                onClick = onNavigateToAlerts,
+                modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(24.dp),
                 color = MaterialTheme.colorScheme.surface,
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
@@ -199,7 +200,8 @@ fun HomeScreen(
 
             // History Tile
             Surface(
-                modifier = Modifier.weight(1f).clickable { onNavigateToHistory() },
+                onClick = onNavigateToHistory,
+                modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(24.dp),
                 color = MaterialTheme.colorScheme.surface,
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
@@ -227,13 +229,13 @@ fun HomeScreen(
             onClick = onManualSOS,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
-                .shadow(12.dp, RoundedCornerShape(24.dp)),
+                .height(64.dp),
             shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error,
                 contentColor = Color.White
-            )
+            ),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                 Icon(Icons.Default.Warning, contentDescription = "SOS", modifier = Modifier.size(24.dp))

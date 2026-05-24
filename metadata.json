@@ -1,0 +1,6 @@
+{
+  "name": "Dignova Sentinel",
+  "description": "An autonomous emergency distress detection and BLE emergency mesh system that asks for help when victims are physically unable to.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
